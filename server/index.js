@@ -3,28 +3,23 @@ import express, { response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import "dotenv/config";
-import admin from "firebase-admin";
-import { getFirestore } from "firebase-admin/firestore";
-import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+
+// Route imports
 import createLinkTokenRouter from "./routes/linkToken.js";
 import exchangePublicTokenRouter from "./routes/exchangePublicToken.js";
 import getTransactionsRouter from "./routes/getTransactions.js";
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
+import registerRouter from "./routes/register.js";
 
 const app = express();
-const PORT = 8080;
-const db = getFirestore();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/create_link_token", createLinkTokenRouter);
 app.use("/exchange_public_token", exchangePublicTokenRouter);
 app.use("/transactions", getTransactionsRouter);
+app.use("/register", registerRouter);
 
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });

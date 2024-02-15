@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import React, { useEffect, useState } from "react";
 import { usePlaidLink } from "react-plaid-link";
+import { Button, Flex } from "@chakra-ui/react";
 import axios from "../app/util/axios";
 
 const Transactions = ({ accessToken }) => {
@@ -80,9 +80,17 @@ const Home = () => {
         </>
     ) : (
         <>
-            <button onClick={() => open()} disabled={!ready}>
-                Connect a bank account
-            </button>
+            <Flex
+                as="main"
+                justifyContent="center"
+                alignItems="center"
+                height="100vh"
+                bg="gray.100"
+            >
+                <Button colorScheme="red" onClick={() => open()} disabled={!ready}>
+                    Connect a bank account
+                </Button>
+            </Flex>
         </>
     );
 };
