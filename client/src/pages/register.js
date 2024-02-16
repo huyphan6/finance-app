@@ -9,6 +9,7 @@ import {
     Link,
     Text,
     Heading,
+    useToast
 } from "@chakra-ui/react";
 
 const Register = () => {
@@ -19,6 +20,8 @@ const Register = () => {
         password: "",
     });
 
+    const toast = useToast();
+
     const handleChange = (e) => {
         setRegForm({
             ...regForm,
@@ -28,11 +31,51 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         try {
+            // make sure that there are no missing fields
+            try {
+                for (const key in regForm) {
+                    if (regForm[key] === "") {
+                        throw new Error("Missing fields");
+                    }
+                }
+            } catch {
+                toast({
+                    title: "Missing fields",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+                return;
+            }
             const res = await axios.post("/register", regForm);
-            console.log(res);
+
+            if (res.status === 200) {
+                toast({
+                    title: "User registered successfully",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+            else {
+                toast({
+                    title: "Unable to register. Try again.",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
         } catch (error) {
             console.log(error);
         }
+
+        // clear the form
+        setRegForm({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+        });
     };
 
     return (
