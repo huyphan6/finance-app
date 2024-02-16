@@ -9,6 +9,7 @@ import createLinkTokenRouter from "./routes/linkToken.js";
 import exchangePublicTokenRouter from "./routes/exchangePublicToken.js";
 import getTransactionsRouter from "./routes/getTransactions.js";
 import registerRouter from "./routes/register.js";
+import loginRouter from "./routes/login.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/create_link_token", createLinkTokenRouter);
 app.use("/exchange_public_token", exchangePublicTokenRouter);
 app.use("/transactions", getTransactionsRouter);
 app.use("/register", registerRouter);
+app.use("/login", loginRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

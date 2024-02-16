@@ -1,8 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import NextLink from "next/link";
-import { Flex, Stack, Input, Button, Heading, Text, Link } from "@chakra-ui/react";
+import axios from "../app/util/axios";
+import {
+    Flex,
+    Stack,
+    Input,
+    Button,
+    Heading,
+    Text,
+    Link,
+    useToast,
+} from "@chakra-ui/react";
 
 const Login = () => {
+    const toast = useToast();
+    const [loginForm, setLoginForm] = useState({
+        email: "",
+        password: "",
+    });
+
+    const handleChange = (e) => {
+        setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        try {
+            // validate form data first before sending to server
+            try {
+                for (const key in loginForm) {
+                    if (loginForm[key] === "") {
+                        toast({
+                            title: "Missing fields",
+                            status: "error",
+                            duration: 9000,
+                            isClosable: true,
+                        });
+                        return;
+                    }
+                }
+            } catch {
+                console.log(error)
+            }
+
+            // send form data to server and handle response
+            const res = await axios.post("/login", loginForm);
+
+            if (res.status === 200) {
+                toast({
+                    title: "User logged in successfully",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: "Unable to login. Try again.",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+        } catch {
+            toast({
+                title: "Unable to login. Try again.",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+
+        // clear the form
+        setLoginForm({
+            email: "",
+            password: "",
+        });
+    };
+
     return (
         <>
             <Flex
@@ -22,15 +95,26 @@ const Login = () => {
                 >
                     <Heading textAlign="left">Welcome</Heading>
                     <Text pb="6">
-                        First time here? {" "}
+                        First time here?{" "}
                         <Link as={NextLink} href="/register" color="blue">
                             Create An Account
                         </Link>
                     </Text>
 
-                    <Input placeholder="Email" />
-                    <Input placeholder="Password" type="password" />
-                    <Button colorScheme="blue">Login</Button>
+                    <Input
+                        placeholder="Email"
+                        name="email"
+                        onChange={handleChange}
+                    />
+                    <Input
+                        placeholder="Password"
+                        name="password"
+                        type="password"
+                        onChange={handleChange}
+                    />
+                    <Button colorScheme="blue" onClick={handleSubmit}>
+                        Login
+                    </Button>
                 </Stack>
             </Flex>
         </>

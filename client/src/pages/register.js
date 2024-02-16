@@ -9,7 +9,7 @@ import {
     Link,
     Text,
     Heading,
-    useToast
+    useToast,
 } from "@chakra-ui/react";
 
 const Register = () => {
@@ -56,8 +56,7 @@ const Register = () => {
                     duration: 9000,
                     isClosable: true,
                 });
-            }
-            else {
+            } else {
                 toast({
                     title: "Unable to register. Try again.",
                     status: "error",
