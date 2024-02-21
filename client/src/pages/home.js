@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Spacer } from "@chakra-ui/react";
 import axios from "../app/util/axios";
 
 const Transactions = ({ accessToken }) => {
@@ -18,8 +18,23 @@ const Transactions = ({ accessToken }) => {
     };
     return (
         <>
-            <button onClick={() => getTransactions()}>Get Transactions</button>
-            <pre>{JSON.stringify(transactions, null, 2)}</pre>
+            <Flex
+                as="main"
+                justifyContent="center"
+                alignItems="center"
+                height="100vh"
+                bg="gray.100"
+            >
+                <Button colorScheme="cyan" onClick={() => getTransactions()}>
+                    Get Transactions
+                </Button>
+
+                <Spacer/>
+
+                <pre>{JSON.stringify(transactions, null, 2)}</pre>
+            </Flex>
+
+            
         </>
     );
 };
@@ -87,7 +102,11 @@ const Home = () => {
                 height="100vh"
                 bg="gray.100"
             >
-                <Button colorScheme="red" onClick={() => open()} disabled={!ready}>
+                <Button
+                    colorScheme="red"
+                    onClick={() => open()}
+                    disabled={!ready}
+                >
                     Connect a bank account
                 </Button>
             </Flex>

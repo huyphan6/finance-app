@@ -12,6 +12,9 @@ import {
     useToast,
 } from "@chakra-ui/react";
 
+// User session object&functions so we can store&persist important user info
+import { user, login, logout } from "../app/util/sessionProvider"
+ 
 const Login = () => {
     const toast = useToast();
     const [loginForm, setLoginForm] = useState({
