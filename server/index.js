@@ -11,6 +11,11 @@ import getTransactionsRouter from "./routes/getTransactions.js";
 import registerRouter from "./routes/register.js";
 import loginRouter from "./routes/login.js";
 
+// Firebase imports
+import admin from "firebase-admin";
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 const app = express();
 
 app.use(cors());
@@ -25,15 +30,6 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });
-
-// // test route to confirm database connection is successful
-// app.post("/testDB", async (request, response) => {
-//   let testDb = db.collection("testCollection");
-//   const testDoc = testDb.doc("testDoc1");
-//   await testDoc.set(request.body);
-
-//   response.send({ Message: "Added to test DB Successfully" });
-// });
 
 /* 
   Plaid Flow:

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import axios from "../app/util/axios";
 import {
     Flex,
@@ -13,9 +14,11 @@ import {
 } from "@chakra-ui/react";
 
 // User session object&functions so we can store&persist important user info
-import { user, login, logout } from "../app/util/sessionProvider"
+import { useSession } from "../app/util/sessionProvider"
  
 const Login = () => {
+    const { updateUUID } = useSession()
+    const router = useRouter()
     const toast = useToast();
     const [loginForm, setLoginForm] = useState({
         email: "",
@@ -55,6 +58,12 @@ const Login = () => {
                     duration: 9000,
                     isClosable: true,
                 });
+
+                // set up user context here
+                updateUUID(res.data.uuid)
+                
+                // successful login will route you to the home page
+                router.push("/home")
             } else {
                 toast({
                     title: "Unable to login. Try again.",

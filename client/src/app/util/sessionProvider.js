@@ -6,20 +6,36 @@ const SessionContext = createContext();
 // Session Provider component
 
 export const SessionProvider = ({ children }) => {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({
+        uuid: null,
+        authToken: null
+    });
 
-    // Function to set user session data
-    const login = (userData) => {
-        setUser(userData);
-    };
+    // Functions to update object props
+    const updateUUID = (uuid) => {
+        setUser({
+            ...user,
+            uuid: uuid
+        })
+    }
+
+    const updateAuthToken = (authToken) => {
+        setUser({
+            ...user,
+            authToken: authToken
+        })
+    }
 
     // Function to clear user session data
     const logout = () => {
-        setUser(null);
+        setUser({
+            uuid: null,
+            authToken: null
+        });
     };
 
     return (
-        <SessionContext.Provider value={{ user, login, logout }}>
+        <SessionContext.Provider value={{ user, updateUUID, updateAuthToken, logout }}>
             {children}
         </SessionContext.Provider>
     );

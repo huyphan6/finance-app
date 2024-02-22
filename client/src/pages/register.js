@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "../app/util/axios";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import {
     Flex,
     Stack,
@@ -13,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 const Register = () => {
+    const router = useRouter()
     const [regForm, setRegForm] = useState({
         firstName: "",
         lastName: "",
@@ -56,6 +58,9 @@ const Register = () => {
                     duration: 9000,
                     isClosable: true,
                 });
+
+                // successful registration will route you to the login page
+                router.push("/login")
             } else {
                 toast({
                     title: "Unable to register. Try again.",
