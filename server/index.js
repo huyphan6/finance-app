@@ -10,6 +10,7 @@ import exchangePublicTokenRouter from "./routes/exchangePublicToken.js";
 import getTransactionsRouter from "./routes/getTransactions.js";
 import registerRouter from "./routes/register.js";
 import loginRouter from "./routes/login.js";
+import getUserRouter from "./routes/getUser.js";
 
 // Firebase imports
 import admin from "firebase-admin";
@@ -25,6 +26,7 @@ app.use("/exchange_public_token", exchangePublicTokenRouter);
 app.use("/transactions", getTransactionsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
+app.use("/getUser", getUserRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

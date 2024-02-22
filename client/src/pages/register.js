@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 const Register = () => {
-    const router = useRouter()
+    const router = useRouter();
     const [regForm, setRegForm] = useState({
         firstName: "",
         lastName: "",
@@ -34,21 +34,18 @@ const Register = () => {
     const handleSubmit = async (e) => {
         try {
             // make sure that there are no missing fields
-            try {
-                for (const key in regForm) {
-                    if (regForm[key] === "") {
-                        throw new Error("Missing fields");
-                    }
+            for (const key in regForm) {
+                if (regForm[key] === "") {
+                    toast({
+                        title: "Missing fields",
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                    return;
                 }
-            } catch {
-                toast({
-                    title: "Missing fields",
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-                return;
             }
+
             const res = await axios.post("/register", regForm);
 
             if (res.status === 200) {
@@ -60,10 +57,10 @@ const Register = () => {
                 });
 
                 // successful registration will route you to the login page
-                router.push("/login")
+                router.push("/login");
             } else {
                 toast({
-                    title: "Unable to register. Try again.",
+                    title: res.data,
                     status: "error",
                     duration: 9000,
                     isClosable: true,
@@ -71,6 +68,12 @@ const Register = () => {
             }
         } catch (error) {
             console.log(error);
+            toast({
+                title: error.response.data,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         }
 
         // clear the form

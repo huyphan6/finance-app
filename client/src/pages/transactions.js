@@ -3,7 +3,7 @@ import { usePlaidLink } from "react-plaid-link";
 import { Button, Flex, Spacer, Heading, Stack } from "@chakra-ui/react";
 import axios from "../app/util/axios";
 import { useRouter } from "next/router";
-import { useSession } from "../app/util/sessionProvider"
+import { useSession } from "../app/util/sessionProvider";
 
 const Transactions = () => {
     const { user } = useSession();
@@ -23,19 +23,24 @@ const Transactions = () => {
                 as="main"
                 justifyContent="center"
                 alignItems="center"
-                height="100vh"
+                height="100%"
                 bg="gray.100"
             >
-                <Button colorScheme="cyan" onClick={() => getTransactions()}>
-                    Get Transactions
-                </Button>
+                <Stack alignItems="center">
+                    <Button
+                        colorScheme="cyan"
+                        onClick={() => getTransactions()}
+                    >
+                        Get Transactions
+                    </Button>
 
-                
+                    <Spacer />
 
-                <pre>{JSON.stringify(transactions, null, 2)}</pre>
+                    <pre>{JSON.stringify(transactions, null, 2)}</pre>
+                </Stack>
             </Flex>
         </>
     );
 };
 
-export default Transactions
+export default Transactions;

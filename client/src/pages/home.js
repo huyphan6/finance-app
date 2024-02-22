@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import { Button, Flex, Spacer, Heading, Stack } from "@chakra-ui/react";
+import { Button, Flex, Spacer, Heading, Stack, Text } from "@chakra-ui/react";
 import axios from "../app/util/axios";
 import { useRouter } from "next/router";
 import { useSession } from "../app/util/sessionProvider";
@@ -65,6 +65,9 @@ const Home = () => {
                 console.log(
                     `Current user info: ${user.uuid} ${user.authToken}`
                 );
+
+                // update the user's auth token field in local storage
+                localStorage.setItem("user", JSON.stringify(user));
             } catch (error) {
                 console.log(error);
             }
@@ -72,7 +75,7 @@ const Home = () => {
     });
 
     // TODO: make sure the user is logged in and authenticated to show transactions
-    return publicToken && user.uuid ? (
+    return user.authToken && user.uuid ? (
         <>
             <Flex
                 as="main"
@@ -81,7 +84,7 @@ const Home = () => {
                 height="100vh"
                 bg="gray.100"
             >
-                <Stack>
+                <Stack alignItems="center">
                     <Heading p="10">Welcome to your Personal Dashboard</Heading>
                     <Button
                         colorScheme="green"
@@ -118,14 +121,15 @@ const Home = () => {
                 height="100vh"
                 bg="gray.100"
             >
-                <Stack>
-                    <Heading p="10">Getting Started</Heading>
+                <Stack alignItems="center">
+                    <Heading >Welcome </Heading>
+                    <Heading pb="10"> User: {user.uuid} </Heading>
                     <Button
                         colorScheme="green"
                         onClick={() => open()}
                         disabled={!ready}
                     >
-                        Connect a bank account
+                        Connect a Bank
                     </Button>
 
                     <Button

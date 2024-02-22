@@ -14,11 +14,11 @@ import {
 } from "@chakra-ui/react";
 
 // User session object&functions so we can store&persist important user info
-import { useSession } from "../app/util/sessionProvider"
- 
+import { useSession } from "../app/util/sessionProvider";
+
 const Login = () => {
-    const { updateUUID } = useSession()
-    const router = useRouter()
+    const { user, updateUUID } = useSession();
+    const router = useRouter();
     const toast = useToast();
     const [loginForm, setLoginForm] = useState({
         email: "",
@@ -32,20 +32,16 @@ const Login = () => {
     const handleSubmit = async (e) => {
         try {
             // validate form data first before sending to server
-            try {
-                for (const key in loginForm) {
-                    if (loginForm[key] === "") {
-                        toast({
-                            title: "Missing fields",
-                            status: "error",
-                            duration: 9000,
-                            isClosable: true,
-                        });
-                        return;
-                    }
+            for (const key in loginForm) {
+                if (loginForm[key] === "") {
+                    toast({
+                        title: "Missing fields",
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                    return;
                 }
-            } catch {
-                console.log(error)
             }
 
             // send form data to server and handle response
@@ -60,21 +56,25 @@ const Login = () => {
                 });
 
                 // set up user context here
-                updateUUID(res.data.uuid)
-                
+                updateUUID(res.data.uuid);
+                console.log("User UUID: ", user.uuid);
+
+                // save user object to local storage
+                localStorage.setItem("user", JSON.stringify(user));
+
                 // successful login will route you to the home page
-                router.push("/home")
+                router.push("/home");
             } else {
                 toast({
-                    title: "Unable to login. Try again.",
+                    title: res.data,
                     status: "error",
                     duration: 9000,
                     isClosable: true,
                 });
             }
-        } catch {
+        } catch (error) {
             toast({
-                title: "Unable to login. Try again.",
+                title: error.response.data,
                 status: "error",
                 duration: 9000,
                 isClosable: true,

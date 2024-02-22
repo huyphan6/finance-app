@@ -32,6 +32,9 @@ export const SessionProvider = ({ children }) => {
             uuid: null,
             authToken: null
         });
+
+        // remove user from local storage
+        localStorage.removeItem("user");
     };
 
     return (

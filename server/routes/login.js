@@ -20,8 +20,9 @@ router.post("/", async (req, res) => {
             message: "User logged in successfully!",
             uuid: user.user.uid
         });
-    } catch {
-        res.status(500).send("Unable to login. Try again.");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
     }
 })
 

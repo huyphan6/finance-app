@@ -39,11 +39,11 @@ router.post("/", async (req, res) => {
             res.status(200).send("User registered successfully");
         } catch (error) {
             console.log(error);
-            res.status(500).send("Unable to register. Try again.");
+            res.status(500).send(error.message);
         }    
     } catch (error) {
-        console.log(error);
-        res.status(500).send("Unable to register. Try again.");
+        console.log(error.message);
+        res.status(500).send(error.message);
     }
 });
 
