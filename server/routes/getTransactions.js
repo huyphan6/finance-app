@@ -13,8 +13,8 @@ router.post("/", async (request, response) => {
         const plaidResponse = await plaidClient.transactionsSync(plaidRequest);
         response.json(plaidResponse.data);
     } catch (error) {
-        console.log(error);
-        response.status(500).send("failed");
+        console.log(error.message);
+        response.status(500).send(error.message);
     }
 });
 

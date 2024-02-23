@@ -17,7 +17,17 @@ const db = getFirestore(fbApp);
 
 router.post("/", async (req, res) => {
     try {
-    } catch (error) {}
-})
+        const access_token = req.body.access_token;
+
+        const plaidRequest = {
+            access_token: access_token,
+        };
+        const plaidResponse = await plaidClient.accountsGet(plaidRequest);
+        res.json(plaidResponse.data);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
+    }
+});
 
 export default router;
