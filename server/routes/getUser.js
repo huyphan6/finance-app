@@ -17,9 +17,9 @@ router.post("/", async (req, res) => {
     try {
         // get specific user from users collection
         const user = await getDoc(doc(db, "users", uuid));
-        res.status(200).send(user)
+        res.status(200).send(user._document.data.value.mapValue.fields);
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).send(error.message); 
     }
 });

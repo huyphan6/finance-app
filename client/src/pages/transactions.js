@@ -29,9 +29,13 @@ const Transactions = () => {
             access_token: user.authToken,
         });
 
-        console.log("transactions data: ", transactions.data);
-        console.log("transactions arr: ", transactions.data.added);
         setTransactions(transactions.data);
+
+        // save transaction data to DB
+        axios.post("/processTransactions", {
+            transactions: transactions.data,
+            uuid: user.uuid,
+        })
     };
     return transactions ? (
         <>
@@ -47,8 +51,8 @@ const Transactions = () => {
                         <TableCaption>Transactions</TableCaption>
                         <Thead>
                             <Tr>
-                                <Th>Account</Th>
-                                <Th>Name</Th>
+                                <Th>Account ID</Th>
+                                <Th>Vendor</Th>
                                 <Th>Amount</Th>
                                 <Th>Currency</Th>
                                 <Th>Date</Th>

@@ -13,6 +13,7 @@ import loginRouter from "./routes/login.js";
 import getUserRouter from "./routes/getUser.js";
 import getAccountsRouter from "./routes/getAccounts.js";
 import getInstitutionsRouter from "./routes/getInstitutions.js";
+import processTransactionsRouter from "./routes/processTransactions.js";
 
 // Firebase imports
 import admin from "firebase-admin";
@@ -31,6 +32,7 @@ app.use("/login", loginRouter);
 app.use("/getUser", getUserRouter);
 app.use("/getAccounts", getAccountsRouter);
 app.use("/getInstitutions", getInstitutionsRouter);
+app.use("/processTransactions", processTransactionsRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -10,6 +10,7 @@ import { useSession } from "../app/util/sessionProvider";
 const Home = () => {
     const router = useRouter();
     const { user, updateAuthToken, logout } = useSession();
+    const [username, setUsername] = useState();
     const [linkToken, setLinkToken] = useState();
     const [publicToken, setPublicToken] = useState();
     const [accessToken, setAccessToken] = useState();
@@ -29,6 +30,20 @@ const Home = () => {
     };
 
     useEffect(() => {
+        // Step 0: Get the user's info from the server
+        const getUser = async () => {
+            try {
+                const res = await axios.post("/getUser", {
+                    uuid: user.uuid,
+                });
+                console.log(res.data);
+                console.log(res.data.firstName.stringValue);
+                setUsername(res.data.firstName.stringValue);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
         // Step 1: Get the link token from the server
         const createLinkToken = async () => {
             try {
@@ -38,6 +53,7 @@ const Home = () => {
                 console.log(error);
             }
         };
+        getUser();
         createLinkToken();
     }, []);
 
@@ -85,7 +101,7 @@ const Home = () => {
                 bg="gray.100"
             >
                 <Stack alignItems="center">
-                    <Heading p="10">Welcome to your Personal Dashboard</Heading>
+                    <Heading p="10">Welcome to your Personal Dashboard {username}</Heading>
                     <Button
                         colorScheme="green"
                         onClick={() => open()}
@@ -123,7 +139,7 @@ const Home = () => {
             >
                 <Stack alignItems="center">
                     <Heading >Welcome </Heading>
-                    <Heading pb="10"> User: {user.uuid} </Heading>
+                    <Heading pb="10"> User: {username} </Heading>
                     <Button
                         colorScheme="green"
                         onClick={() => open()}

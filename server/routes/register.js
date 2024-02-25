@@ -16,7 +16,6 @@ const router = express.Router();
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 
-
 router.post("/", async (req, res) => {
     // TODO: check if user already exists and give proper error message
     const { firstName, lastName, email, password } = req.body;
@@ -33,7 +32,8 @@ router.post("/", async (req, res) => {
                 uid: uuid,
                 firstName: firstName,
                 lastName: lastName,
-                email: email
+                email: email,
+                accessToken: null,
             })
 
             res.status(200).send("User registered successfully");

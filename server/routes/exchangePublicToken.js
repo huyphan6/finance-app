@@ -6,7 +6,7 @@ import plaidClient from "../plaidConfig.js";
 import admin from "firebase-admin";
 import serviceAccount from "../serviceAccountKey.json" assert { type: "json" };
 import { getAuth, initializeAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";   
+import { getFirestore, doc, updateDoc } from "firebase/firestore";   
 import fbApp from "../firebaseConfig.js";
 
 const router = express.Router();
@@ -27,8 +27,8 @@ router.post("/", async (req, res, next) => {
         // associated with the currently signed-in user
 
         const accessToken = plaidResponse.data.access_token;
-        await setDoc(doc(db, "users", UUID), {
-            accessToken: accessToken
+        await updateDoc(doc(db, "users", UUID), {
+            accessToken: accessToken,
         });
 
         const itemID = plaidResponse.data.item_id;
