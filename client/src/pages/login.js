@@ -62,6 +62,9 @@ const Login = () => {
                 // save user object to local storage
                 localStorage.setItem("user", JSON.stringify(user));
 
+                // TODO: make async call to DB to check if the user has an access token stored so we don't need to connect a bank every time:
+
+
                 // successful login will route you to the home page
                 router.push("/home");
             } else {
