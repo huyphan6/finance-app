@@ -64,6 +64,11 @@ const Login = () => {
 
                 // TODO: make async call to DB to check if the user has an access token stored so we don't need to connect a bank every time:
 
+                // clear the form
+                setLoginForm({
+                    email: "",
+                    password: "",
+                });
 
                 // successful login will route you to the home page
                 router.push("/home");
@@ -83,12 +88,6 @@ const Login = () => {
                 isClosable: true,
             });
         }
-
-        // clear the form
-        setLoginForm({
-            email: "",
-            password: "",
-        });
     };
 
     return (

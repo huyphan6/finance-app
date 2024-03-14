@@ -6,6 +6,7 @@ import { Button, Flex, Spacer, Heading, Stack, Text } from "@chakra-ui/react";
 import axios from "../app/util/axios";
 import { useRouter } from "next/router";
 import { useSession } from "../app/util/sessionProvider";
+import Transactions from "./transactions";
 
 const Home = () => {
     const router = useRouter();
@@ -38,11 +39,13 @@ const Home = () => {
                 });
                 console.log(res.data);
                 console.log(res.data.firstName.stringValue);
+                console.log(res.data.accessToken.stringValue);
                 setUsername(res.data.firstName.stringValue);
+                setAccessToken(res.data.accessToken.stringValue);
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
         // Step 1: Get the link token from the server
         const createLinkToken = async () => {
@@ -91,7 +94,7 @@ const Home = () => {
     });
 
     // TODO: make sure the user is logged in and authenticated to show transactions
-    return user.authToken && user.uuid ? (
+    return accessToken && user.uuid ? (
         <>
             <Flex
                 as="main"
@@ -101,21 +104,19 @@ const Home = () => {
                 bg="gray.100"
             >
                 <Stack alignItems="center">
-                    <Heading p="10">Welcome to your Personal Dashboard {username}</Heading>
+                    <Heading p="10">
+                        Welcome to your Personal Dashboard {username}
+                    </Heading>
+                    
+
+                    <Transactions accessToken={accessToken}/>
+
                     <Button
                         colorScheme="green"
                         onClick={() => open()}
                         disabled={!ready}
                     >
-                        Connect a bank account
-                    </Button>
-
-                    <Button
-                        colorScheme="blue"
-                        onClick={() => router.push("/transactions")}
-                        disabled={!ready}
-                    >
-                        Get Transaction Data
+                        Connect another bank account
                     </Button>
 
                     <Button
@@ -138,7 +139,7 @@ const Home = () => {
                 bg="gray.100"
             >
                 <Stack alignItems="center">
-                    <Heading >Welcome </Heading>
+                    <Heading>Welcome </Heading>
                     <Heading pb="10"> User: {username} </Heading>
                     <Button
                         colorScheme="green"

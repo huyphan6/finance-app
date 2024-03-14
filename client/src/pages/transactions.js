@@ -20,13 +20,17 @@ import axios from "../app/util/axios";
 import { useRouter } from "next/router";
 import { useSession } from "../app/util/sessionProvider";
 
-const Transactions = () => {
+const Transactions = ({accessToken}) => {
     const { user } = useSession();
     const [transactions, setTransactions] = useState();
 
+    useEffect(() => {
+        getTransactions();
+    }, [])
+
     const getTransactions = async () => {
         const transactions = await axios.post("/transactions", {
-            access_token: user.authToken,
+            access_token: accessToken,
         });
 
         setTransactions(transactions.data);

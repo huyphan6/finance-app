@@ -11,7 +11,7 @@ router.post("/", async (request, response) => {
         client_name: "Plaid Test App",
         products: ["auth", "transactions"],
         language: "en",
-        redirect_uri: "http://localhost:3000/",
+        redirect_uri: "https://localhost:3001/",
         country_codes: ["US"],
     };
     try {
