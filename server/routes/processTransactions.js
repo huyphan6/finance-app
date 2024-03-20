@@ -19,6 +19,7 @@ const db = getFirestore(fbApp);
 router.post("/", async (req, res) => {
     try {
         const transactions = req.body.transactions;
+        const next_cursor = req.body.next_cursor;
         const userRef = doc(db, "users", req.body.uuid);
         const transactionsRef = collection(userRef, "transactions");
         transactions.added.map( async (tx) => {
@@ -33,12 +34,15 @@ router.post("/", async (req, res) => {
                 date: tx.date,
                 category: tx.personal_finance_category,
                 transaction_type: tx.transaction_type,
-            })
+                location: tx.location || null,
+                counterparties: tx.counterparties || null,
+                next_cursor: next_cursor,
+            }) 
         })
 
         res.status(200).send("Transactions added successfully");
     } catch (error) {
-        console.log(error);
+        console.log(error);  
         res.status(500).send(error.message)
     }
 })

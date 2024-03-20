@@ -37,13 +37,12 @@ const Home = () => {
                 const res = await axios.post("/getUser", {
                     uuid: user.uuid,
                 });
-                console.log(res.data);
-                console.log(res.data.firstName.stringValue);
-                console.log(res.data.accessToken.stringValue);
                 setUsername(res.data.firstName.stringValue);
                 setAccessToken(res.data.accessToken.stringValue);
+                return true;
             } catch (error) {
                 console.log(error);
+                return false;
             }
         };
 
@@ -56,6 +55,9 @@ const Home = () => {
                 console.log(error);
             }
         };
+        // if (!getUser()) {
+        //     createLinkToken();
+        // }
         getUser();
         createLinkToken();
     }, []);
@@ -102,31 +104,36 @@ const Home = () => {
                 alignItems="center"
                 height="100vh"
                 bg="gray.100"
+                direction="column"
+                p="8"
             >
                 <Stack alignItems="center">
                     <Heading p="10">
                         Welcome to your Personal Dashboard {username}
                     </Heading>
-                    
 
-                    <Transactions accessToken={accessToken}/>
-
-                    <Button
-                        colorScheme="green"
-                        onClick={() => open()}
-                        disabled={!ready}
-                    >
-                        Connect another bank account
-                    </Button>
-
-                    <Button
-                        colorScheme="red"
-                        onClick={handleLogout}
-                        disabled={!ready}
-                    >
-                        Logout
-                    </Button>
+                    <Transactions accessToken={accessToken} />
                 </Stack>
+
+                <Spacer />
+
+                <Button
+                    colorScheme="green"
+                    onClick={() => open()}
+                    disabled={!ready}
+                    m="2"
+                >
+                    Connect another bank account
+                </Button>
+
+                <Button
+                    colorScheme="red"
+                    onClick={handleLogout}
+                    disabled={!ready}
+                    m="2"
+                >
+                    Logout
+                </Button>
             </Flex>
         </>
     ) : (
@@ -139,22 +146,13 @@ const Home = () => {
                 bg="gray.100"
             >
                 <Stack alignItems="center">
-                    <Heading>Welcome </Heading>
-                    <Heading pb="10"> User: {username} </Heading>
-                    <Button
-                        colorScheme="green"
-                        onClick={() => open()}
-                        disabled={!ready}
-                    >
-                        Connect a Bank
-                    </Button>
+                    <Heading p="8"> You Are Not Logged In </Heading>
 
                     <Button
                         colorScheme="red"
-                        onClick={handleLogout}
-                        disabled={!ready}
+                        onClick={() => router.push("/login")}
                     >
-                        Logout
+                        Back To Login
                     </Button>
                 </Stack>
             </Flex>

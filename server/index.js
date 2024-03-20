@@ -15,6 +15,8 @@ import getAccountsRouter from "./routes/getAccounts.js";
 import getInstitutionsRouter from "./routes/getInstitutions.js";
 import processTransactionsRouter from "./routes/processTransactions.js";
 import getAccessTokenRouter from "./routes/getAccessToken.js";
+import getSpendingCategorySummaryRouter from "./routes/getSpendingCategorySummary.js";
+import getTopVendorsSummaryRouter from "./routes/getTopVendorsSummary.js";
 
 // Firebase imports
 import admin from "firebase-admin";
@@ -35,6 +37,8 @@ app.use("/getAccounts", getAccountsRouter);
 app.use("/getInstitutions", getInstitutionsRouter);
 app.use("/processTransactions", processTransactionsRouter);
 app.use("/getAccessToken", getAccessTokenRouter);
+app.use("/getSpendingCategorySummary", getSpendingCategorySummaryRouter);
+app.use("/getTopVendorsSummary", getTopVendorsSummaryRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
