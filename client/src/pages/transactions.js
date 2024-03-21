@@ -70,8 +70,6 @@ const Transactions = ({ accessToken }) => {
 
             setSpendingCategories(spendingCategories.data);
             setTopVendors(topVendors.data);
-            console.log(spendingCategories);
-            console.log(topVendors);
 
             // save transaction data to DB
             axios.post("/processTransactions", {
@@ -98,8 +96,10 @@ const Transactions = ({ accessToken }) => {
                 height="100%"
                 bg="gray.100"
                 direction="column"
+                m="auto"
+                p="auto"
             >
-                {/* // TODO: Table View */}
+                {/* // TODO: Fix Table Width on Mobile Format */}
                 <Button
                     colorScheme="blue"
                     onClick={() => setTxTableDisplay(!txTableDisplay)}
@@ -107,9 +107,11 @@ const Transactions = ({ accessToken }) => {
                 >
                     Show Transactions Table
                 </Button>
-                <Flex>
+                <Flex alignItems="center">
                     <TableContainer
-                        p="10"
+                        m="auto"
+                        p="auto"
+                        maxWidth="fit-content"
                         display={txTableDisplay ? "block" : "none"}
                     >
                         <Table variant="striped" colorScheme="telegram">
@@ -153,89 +155,94 @@ const Transactions = ({ accessToken }) => {
 
                 <Spacer />
 
-                {/* // TODO: Top 5 Vendors Chart */}
-                <Button
-                    colorScheme="blue"
-                    onClick={() => setVendorDisplay(!vendorDisplay)}
-                    m="4"
-                >
-                    Show Top 5 Vendors
-                </Button>
+                <Stack direction={{ base: "column", md: "row", lg: "row", xl: "row" }}>
+                    <Stack direction="column">
+                        <Button
+                            colorScheme="blue"
+                            onClick={() => setVendorDisplay(!vendorDisplay)}
+                            m="4"
+                        >
+                            Show Top 5 Vendors
+                        </Button>
+                        <Card
+                            display={vendorDisplay ? "block" : "none"}
+                            p="4"
+                            m="4"
+                            alignItems="center"
+                        >
+                            <CardHeader>Top 5 Vendors</CardHeader>
+                            <CardBody>
+                                <Flex direction="column">
+                                    {Object.entries(topVendors).map(
+                                        ([vendor, amount]) => {
+                                            return (
+                                                <StatGroup>
+                                                    <Stat>
+                                                        <StatLabel>
+                                                            Vendor: {vendor}
+                                                        </StatLabel>
+                                                        <StatNumber>
+                                                            {amount < 0 ? `You earned $${-amount}` : `You spent $${amount}`}
+                                                        </StatNumber>
+                                                    </Stat>
+                                                </StatGroup>
+                                            );
+                                        }
+                                    )}
+                                </Flex>
+                            </CardBody>
+                        </Card>
+                    </Stack>
 
-                <Card
-                    display={vendorDisplay ? "block" : "none"}
-                    p="4"
-                    m="4"
-                    w="30vw"
-                    h="30vh"
-                    alignItems="center"
-                >
-                    <CardHeader>Top 5 Vendors</CardHeader>
-                    <CardBody>
-                        <Flex direction="column">
-                            {Object.entries(topVendors).map(
-                                ([vendor, amount]) => {
-                                    return (
-                                        <StatGroup>
-                                            <Stat>
-                                                <StatLabel>
-                                                    Vendor: {vendor}
-                                                </StatLabel>    
-                                                <StatNumber>
-                                                    You Spent ${amount}
-                                                </StatNumber>
-                                            </Stat>
-                                        </StatGroup>
-                                    );
-                                }
-                            )}
-                        </Flex>
-                    </CardBody>
-                </Card>
+                    <Stack direction="column">
+                        <Button
+                            colorScheme="blue"
+                            onClick={() =>
+                                setSpendingCategoryDisplay(
+                                    !spendingCategoryDisplay
+                                )
+                            }
+                            m="4"
+                        >
+                            Top Spending Categories
+                        </Button>
 
-                {/* // TODO: Spending Categories Chart */}
-                <Button
-                    colorScheme="blue"
-                    onClick={() =>
-                        setSpendingCategoryDisplay(!spendingCategoryDisplay)
-                    }
-                    m="4"
-                >
-                    Top Spending Categories
-                </Button>
-
-                <Card
-                    display={spendingCategoryDisplay ? "block" : "none"}
-                    p="4"
-                    m="4"
-                    w="30vw"
-                    h="30vh"
-                    alignItems="center"
-                >
-                    <CardHeader>Top Spending Categories</CardHeader>
-                    <CardBody>
-                        <Flex direction="column">
-                            {Object.entries(spendingCategories).map(
-                                ([category, count]) => {
-                                    return (
-                                        <StatGroup>
-                                            <Stat>
-                                                <StatLabel>
-                                                    {category}
-                                                </StatLabel>
-                                                <StatNumber>{count} times</StatNumber>
-                                            </Stat>
-                                        </StatGroup>
-                                    );
-                                }
-                            )}
-                        </Flex>
-                    </CardBody>
-                </Card>
+                        <Card
+                            display={spendingCategoryDisplay ? "block" : "none"}
+                            p="4"
+                            m="4"
+                            alignItems="center"
+                        >
+                            <CardHeader>Top Spending Categories</CardHeader>
+                            <CardBody>
+                                <Flex direction="column">
+                                    {Object.entries(spendingCategories).map(
+                                        ([category, count]) => {
+                                            return (
+                                                <StatGroup>
+                                                    <Stat>
+                                                        <StatLabel>
+                                                            {category}
+                                                        </StatLabel>
+                                                        <StatNumber>
+                                                            {count} times
+                                                        </StatNumber>
+                                                    </Stat>
+                                                </StatGroup>
+                                            );
+                                        }
+                                    )}
+                                </Flex>
+                            </CardBody>
+                        </Card>
+                    </Stack>
+                </Stack>
             </Flex>
         </>
     ) : (
-        <></>
+        <>
+            Please Connect A Bank Account
+        </>
     );
 };
 

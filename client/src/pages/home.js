@@ -105,10 +105,11 @@ const Home = () => {
                 height="100vh"
                 bg="gray.100"
                 direction="column"
-                p="8"
+                p="auto"
+                m="auto"
             >
                 <Stack alignItems="center">
-                    <Heading p="10">
+                    <Heading p="8" m="8" textAlign="center">
                         Welcome to your Personal Dashboard {username}
                     </Heading>
 
@@ -117,23 +118,25 @@ const Home = () => {
 
                 <Spacer />
 
-                <Button
-                    colorScheme="green"
-                    onClick={() => open()}
-                    disabled={!ready}
-                    m="2"
-                >
-                    Connect another bank account
-                </Button>
+                <Flex direction="column" alignItems="center" mb="2">
+                    <Button
+                        colorScheme="green"
+                        onClick={() => open()}
+                        disabled={!ready}
+                        m="2"
+                    >
+                        Connect another bank account
+                    </Button>
 
-                <Button
-                    colorScheme="red"
-                    onClick={handleLogout}
-                    disabled={!ready}
-                    m="2"
-                >
-                    Logout
-                </Button>
+                    <Button
+                        colorScheme="red"
+                        onClick={handleLogout}
+                        disabled={!ready}
+                        m="2"
+                    >
+                        Logout
+                    </Button>
+                </Flex>
             </Flex>
         </>
     ) : (
