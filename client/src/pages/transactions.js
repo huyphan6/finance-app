@@ -44,7 +44,7 @@ const Transactions = ({ accessToken }) => {
 
     useEffect(() => {
         getTransactions();
-    }, []);  
+    }, []);
 
     const getTransactions = async () => {
         try {
@@ -53,18 +53,21 @@ const Transactions = ({ accessToken }) => {
             });
 
             setTransactions(transactions.data);
-            
+
             // TODO: move data processing to server
             // data grouping + processing
-            
-            const spendingCategories = await axios.post("/getSpendingCategorySummary", {
-                transactions: transactions.data,
-            });
+
+            const spendingCategories = await axios.post(
+                "/getSpendingCategorySummary",
+                {
+                    transactions: transactions.data,
+                }
+            );
 
             const topVendors = await axios.post("/getTopVendorsSummary", {
                 transactions: transactions.data,
             });
-            
+
             setSpendingCategories(spendingCategories.data);
             setTopVendors(topVendors.data);
             console.log(spendingCategories);
@@ -163,22 +166,30 @@ const Transactions = ({ accessToken }) => {
                     display={vendorDisplay ? "block" : "none"}
                     p="4"
                     m="4"
-                    w="40vw"
-                    h="40vh"
+                    w="30vw"
+                    h="30vh"
+                    alignItems="center"
                 >
                     <CardHeader>Top 5 Vendors</CardHeader>
                     <CardBody>
-                        
-                        {Object.entries(topVendors).map(([vendor, amount]) => {
-                            return (
-                                <StatGroup>
-                                    <Stat>
-                                        <StatLabel>{vendor}</StatLabel>
-                                        <StatNumber>{amount}</StatNumber>
-                                    </Stat>
-                                </StatGroup>
-                            );
-                        })}
+                        <Flex direction="column">
+                            {Object.entries(topVendors).map(
+                                ([vendor, amount]) => {
+                                    return (
+                                        <StatGroup>
+                                            <Stat>
+                                                <StatLabel>
+                                                    Vendor: {vendor}
+                                                </StatLabel>    
+                                                <StatNumber>
+                                                    You Spent ${amount}
+                                                </StatNumber>
+                                            </Stat>
+                                        </StatGroup>
+                                    );
+                                }
+                            )}
+                        </Flex>
                     </CardBody>
                 </Card>
 
@@ -192,7 +203,35 @@ const Transactions = ({ accessToken }) => {
                 >
                     Top Spending Categories
                 </Button>
-                <Flex></Flex>
+
+                <Card
+                    display={spendingCategoryDisplay ? "block" : "none"}
+                    p="4"
+                    m="4"
+                    w="30vw"
+                    h="30vh"
+                    alignItems="center"
+                >
+                    <CardHeader>Top Spending Categories</CardHeader>
+                    <CardBody>
+                        <Flex direction="column">
+                            {Object.entries(spendingCategories).map(
+                                ([category, count]) => {
+                                    return (
+                                        <StatGroup>
+                                            <Stat>
+                                                <StatLabel>
+                                                    {category}
+                                                </StatLabel>
+                                                <StatNumber>{count} times</StatNumber>
+                                            </Stat>
+                                        </StatGroup>
+                                    );
+                                }
+                            )}
+                        </Flex>
+                    </CardBody>
+                </Card>
             </Flex>
         </>
     ) : (
